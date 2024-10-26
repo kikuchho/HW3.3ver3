@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Module 1.3 - Tabletop Browser</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+
+    <!-- bringing bundler  -->
+    <link  rel='stylesheet' href="main.css">
+
+    <style>
+    .gameSummary {
+      border: solid 1px lightgrey;
+      border-radius: 10px;
+      box-shadow: lightgrey 3px 3px 6px;
+      transition: box-shadow 0.3s ease-in-out;
+      text-align: center;
+      padding: 5px;
+      margin-bottom: 15px;
+      vertical-align: bottom;
+      cursor: pointer;
+    }
+
+    .gameSummary:hover {
+      box-shadow: gray 5px 5px 10px;
+    }
+
+    .summaryTitle { display: block; font-size: medium; height: 4.5em; }
+    .summaryInfo { display: block; font-size: medium; height: 5em; }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <!-- Page header -->
+      <div class='row'>
+        <div class="pb-2 mt-4 mb-2 border-bottom" style="width: 100%;">
+          <h1>TableTop Game Browser</h1>
+          Click on a Tabletop Game below for more information.
+        </div>
+      </div>
+
+      <!-- Game Grid (filled from JavaScript)-->
+      <div class='row' id="gameGrid"></div>
+
+      <form id="addGameForm">
+        <div class="row">
+          <div class="col">
+            <label for="newGame-id" class="form-label">Game ID:</label>
+            <input type="text" class="form-control" id="newGame-id" placeholder="00001">
+          </div>
+
+          <div class="col">
+            <label for="newGame-name" class="form-label">Game Name:</label>
+            <input type="text" class="form-control" id="newGame-name" placeholder="Scythe">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="newGame-description" class="form-label">Description:</label>
+            <textarea rows="5" class="form-control" id="newGame-description"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="newGame-yearPublished" class="form-label">Year Released:</label>
+            <input type="number" class="form-control" id="newGame-yearPublished" placeholder="2020">
+          </div>
+
+          <div class="col">
+            <label for="newGame-minAge" class="form-label">Minimum Age:</label>
+            <input type="number" class="form-control" id="newGame-minAge" placeholder="8">
+          </div>
+
+          <div class="col">
+            <label for="newGame-rating" class="form-label">Rating:</label>
+            <input type="text" class="form-control" id="newGame-rating" placeholder="7.5">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="newGame-playingTime" class="form-label">Avg Playtime:</label>
+            <input type="number" class="form-control" id="newGame-playingTime" placeholder="8">
+          </div>
+
+          <div class="col">
+            <label for="newGame-minPlayTime" class="form-label">Min Playtime:</label>
+            <input type="number" class="form-control" id="newGame-minPlayTime" placeholder="8">
+          </div>
+
+          <div class="col">
+            <label for="newGame-maxPlayTime" class="form-label">Max Playtime:</label>
+            <input type="number" class="form-control" id="newGame-maxPlayTime" placeholder="8">
+          </div>
+
+          <div class="col">
+            <label for="newGame-minPlayers" class="form-label">Min Players:</label>
+            <input type="number" class="form-control" id="newGame-minPlayers" placeholder="8">
+          </div>
+
+          <div class="col">
+            <label for="newGame-maxPlayers" class="form-label">Max Players:</label>
+            <input type="number" class="form-control" id="newGame-maxPlayers" placeholder="8">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="newGame-weight" class="form-label">Weight:</label>
+            <input type="text" class="form-control" id="newGame-weight" placeholder="8.5">
+          </div>
+
+          <div class="col">
+            <label for="newGame-publishers" class="form-label">Publishers:</label>
+            <input type="text" class="form-control" id="newGame-publishers" placeholder="Joe Schmo">
+          </div>
+
+          <div class="col">
+            <label for="newGame-designers" class="form-label">Designers:</label>
+            <input type="text" class="form-control" id="newGame-designers" placeholder="Joe Schmo">
+          </div>
+
+          <div class="col">
+            <label for="newGame-artists" class="form-label">Artists:</label>
+            <input type="text" class="form-control" id="newGame-artists" placeholder="Joe Schmo">
+          </div>
+
+          <div class="col">
+            <label for="newGame-image" class="form-label">Image URL:</label>
+            <input type="text" class="form-control" id="newGame-image" placeholder="image.jpg">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </form>
+
+    </div> <!-- /container -->
+
+    <!-- Modal, this will be displayed when user click card  -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="detailModalLabel">
+              <span id="details-name">TableTopTitle</span>
+              <span id="details-id">12345</span>
+            </h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!--detail here-->
+            <span id="details-yearPublished">yearPublished</span><br/>
+            <span id="details-description">description</span><br/>
+            <span id="details-name">name</span><br/>
+            <span id="details-minAge">minAge</span><br />
+            <span id="details-rating">rating</span><br/>
+            <span id="details-minPlayTime">minPlayTime</span><br/>
+            <span id="details-maxPlayTime">maxPlayTime</span><br/>
+            <span id="details-minPlayers">minPlayers</span><br/>
+            <span id="details-maxPlayers">maxPlayers</span><br/>
+            <span id="details-weight">weight</span><br/>
+            <span id="details-publishers">publishers</span><br/>
+            <img id="details-image" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Our custom modular JavaScript, this is no longer a moduler -->
+    <script src="main.js"></script>
+  </body>
+</html>
